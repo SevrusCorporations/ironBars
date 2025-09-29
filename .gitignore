@@ -6,4 +6,4 @@ __pycache__/
 test*
 *.egg-info/
 .pypirc
-upload.sh
+upload*
