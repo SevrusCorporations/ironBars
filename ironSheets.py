@@ -1,3 +1,4 @@
+# Author -> Sevrus b25bs1304@iitj.ac.in, GITHUB -> sevruscorporations@gmail.com
 import pandas as pd
 
 def get_correct_url(url, as_df=False):
