@@ -1,7 +1,7 @@
 # Author -> Sevrus b25bs1304@iitj.ac.in, GITHUB -> sevruscorporations@gmail.com
 import pandas as pd
 
-def get_correct_url(url, as_df=False):
+def gsheet_load(url, as_df=False):
     """
     Convert a Google Sheets share link to a CSV export link.
     

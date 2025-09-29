@@ -5,3 +5,4 @@ __pycache__/
 .env
 test*
 *.egg-info/
+.pypirc
