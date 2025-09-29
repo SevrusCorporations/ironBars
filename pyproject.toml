@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ironBars"
-version = "0.1.1"
-description = "Small but useful Python utilities"
+version = "0.2.0"
+description = "A lightweight Python utility library providing handy functions for efficient data handling, CSV management, and Google Sheets integration."
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [

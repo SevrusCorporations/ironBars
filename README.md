@@ -1,37 +1,124 @@
 # Iron Bars
-A Handy utility to provide some small useful functions, which can be easily imported and provides speed and efficiency in your program.
 
-# Requirements
-- Any Operating System with python installed.
-- Python's Version must be >= 3.10
+**Iron Bars** is a lightweight Python utility providing a set of small but powerful functions to simplify common programming tasks. It is designed to be fast, easy to use, and improve efficiency in your projects.
+
+---
+
+## Requirements
+
+- Any operating system with Python installed.
+- Python version >= 3.10.
+
+---
 
 ## Installation
-Installation process is simple, You can install the library easily via pip.
+
+You can easily install **Iron Bars** via `pip`:
+
 ```bash
 pip install ironbars
 ```
 
-## IronSheets
-IronSheets provides functions to handle CSV files, like importing them from google drive directly or from any other location like github(added in future versions).
+---
 
-### Usage
-So, using IronSheets is an easy process. It provides the following function :-
-- **gsheet_load(url:[str or list], as_df=False)** - This function takes a google drive's shared url of a csv file which can be automatically transformed into a usable CSV link or loaded into memory as a DataFrame, making data access seamless.
-- When we use **gsheet_load({your_url}, as_df=True)** - It returns the pandas dataframe of that csv directly.
-- When we set **as_df=False** - It returns the transformed url of the CSV file.
-- **We can pass list of urls** - Instead of passing a single url, we can pass a list of urls & it will return list of transformed urls.
-- If we use **list of urls** along with **as_df = True** then it will return list of dataframes.
-```bash
+## IronSheets
+
+**IronSheets** is a module within Iron Bars that simplifies working with CSV files, especially for loading data directly from Google Sheets. Future versions will also include support for other sources like GitHub.
+
+---
+
+### Functions
+
+#### `gsheet_load(url: str | list, as_df: bool = False, max_workers: int | None = None)`
+
+This function takes a Google Sheets share link (or a list of links) and either:
+
+- Converts it to a direct CSV download URL, or  
+- Loads it directly as a pandas DataFrame.
+
+**Parameters:**
+
+- `url` (`str` | `list[str]`): Google Sheet URL(s).  
+- `as_df` (`bool`): If `True`, returns pandas DataFrame(s) instead of CSV URL(s). Default is `False`.  
+- `max_workers` (`int` | `None`): Maximum threads for parallel downloading (used when multiple URLs are provided). Defaults to `None`.
+
+**Returns:**
+
+- `str` | `list[str]` | `pd.DataFrame` | `list[pd.DataFrame]`
+
+**Examples:**
+
+```python
 import ironSheets
 
+# Single URL -> transformed CSV link
 url = "https://docs.google.com/spreadsheets/d/1qBIPJ_W_CV3DEU4NxklnJaSeJo5wzRIPabAdCUgtCtQ/edit?usp=sharing"
 corrected_url = ironSheets.gsheet_load(url)
-print(corrected_url) # This is the direct download link of the csv file
+print(corrected_url)  # Direct CSV download link
 
-# if we want the dataframe
-df = ironSheets.gsheet_load(url, as_df=True) # this will return the dataframe made from the csv
+# Single URL -> pandas DataFrame
+df = ironSheets.gsheet_load(url, as_df=True)
+print(df.head())
 
-urls = [url1, url2, etc] # list containing urls
-corrected_urls = ironSheets.gsheet_load(urls) # it will return list of transformed urls
-data_frames = ironSheets.gsheet_load(urls, as_df=True) # it will return list of dataframes
+# Multiple URLs -> list of CSV links
+urls = [url1, url2]
+corrected_urls = ironSheets.gsheet_load(urls)
+print(corrected_urls)
+
+# Multiple URLs -> list of DataFrames (parallel download)
+data_frames = ironSheets.gsheet_load(urls, as_df=True)
+for df in data_frames:
+    print(df.head())
 ```
+
+---
+
+#### `gsheet_save(data_frames, auto_name=True, name_series="Sheet", save_dir=".", filename=None)`
+
+This function saves one or more pandas DataFrames as CSV files.
+
+**Parameters:**
+
+- `data_frames` (`pd.DataFrame | list[pd.DataFrame]`): Single DataFrame or a list of DataFrames to save.  
+- `auto_name` (`bool`): If `True`, generates filenames automatically using `name_series` + index. Only for multiple DataFrames. Default is `True`.  
+- `name_series` (`str` | `list[str]`): Base name (string) for auto-naming, or list of filenames when `auto_name=False`.  
+- `save_dir` (`str`): Directory to save CSV files. Defaults to the current working directory (`.`).  
+- `filename` (`str` | `None`): Required when saving a single DataFrame. Must include `.csv` extension or it will be added automatically.
+
+**Notes:**
+
+- **Single DataFrame**: You must provide the `filename` parameter.  
+- **Multiple DataFrames**: You can use `auto_name=True` (e.g., `Sheet0.csv`, `Sheet1.csv`) or provide a list of names with `auto_name=False`.  
+- The function ensures the `save_dir` exists.
+
+**Examples:**
+
+```python
+# Single DataFrame -> specify filename
+df = ironSheets.gsheet_load(url, as_df=True)
+ironSheets.gsheet_save(df, filename="my_sheet.csv")
+
+# Multiple DataFrames -> auto name
+dfs = ironSheets.gsheet_load([url1, url2], as_df=True)
+ironSheets.gsheet_save(dfs, auto_name=True, name_series="Sheet")
+
+# Multiple DataFrames -> custom names
+ironSheets.gsheet_save(dfs, auto_name=False, name_series=["First", "Second"])
+```
+
+---
+
+### Improvements in the latest version
+
+- Robust URL conversion for various Google Sheets formats.  
+- Parallel downloading of multiple Google Sheets using threads.  
+- Optional `max_workers` for controlling parallel downloads.  
+- Improved error handling for invalid or inaccessible URLs.  
+- Absolute `save_dir` handling and automatic directory creation.  
+- Single DataFrame saving requires a filename, preventing accidental overwrites.  
+- Auto and custom naming for multiple DataFrames with clear assertions and error messages.  
+
+---
+
+**Author:** Sevrus (b25bs1304@iitj.ac.in)  
+**GitHub:** [sevruscorporations](https://github.com/sevruscorporations)
