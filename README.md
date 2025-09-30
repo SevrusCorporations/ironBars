@@ -12,7 +12,7 @@ This utility is perfect for:
 
 ---
 
-## Latest Shipment -> [V0.2.2 (Minor Patch) 30-09-2025](https://pypi.org/project/ironBars/0.2.2/)
+## Latest Shipment -> [V0.2.3 (Minor Patch) 30-09-2025](https://pypi.org/project/ironBars/0.2.3/)
 <a href="https://pypi.org/project/ironBars/">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/PyPI_logo.svg" width="100" alt="PyPI">
 </a>
