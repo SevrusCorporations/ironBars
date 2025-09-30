@@ -38,7 +38,7 @@ pip install ironbars
 
 #### `gsheet_load(url: str | list, as_df: bool = False, max_workers: int | None = None)`
 
-This function takes a Google Sheets share link (or a list of links) and either:
+This function takes a Google Sheets share link (or a list of links) or csv file from github and either:
 
 - Converts it to a direct CSV download URL, or  
 - Loads it directly as a pandas DataFrame.

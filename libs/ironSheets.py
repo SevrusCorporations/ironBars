@@ -2,13 +2,14 @@
 import os
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import urlparse
 
 def gsheet_load(url, as_df=False, max_workers=None):
     """
-    Convert a Google Sheets share link to a CSV export link and optionally load as DataFrame(s).
+    Convert a Google Sheets, GitHub, or direct CSV link to a CSV-ready URL and optionally load as DataFrame(s).
 
     Parameters:
-        url (str | list): Google Sheet URL(s).
+        url (str | list): URL(s) of CSV file(s).
         as_df (bool): If True, return pandas DataFrame(s) instead of URL(s).
         max_workers (int | None): Max threads for parallel downloading (only for list of URLs).
 
@@ -16,16 +17,28 @@ def gsheet_load(url, as_df=False, max_workers=None):
         str | list | pd.DataFrame | list[pd.DataFrame]
     """
 
-    def convert(single_url):
-        if not single_url.startswith("https://docs.google.com/spreadsheets/"):
-            raise ValueError(f"Invalid Google Sheet URL: {single_url}")
-        # Handle different URL formats robustly
-        if "/edit" in single_url:
-            return single_url.split("/edit")[0] + "/gviz/tq?tqx=out:csv"
-        return single_url  # Already CSV export link
+    def convert_url(single_url):
+        parsed = urlparse(single_url)
+        netloc = parsed.netloc.lower()
+
+        # Google Sheets
+        if "docs.google.com/spreadsheets" in netloc:
+            if "/edit" in single_url:
+                return single_url.split("/edit")[0] + "/gviz/tq?tqx=out:csv"
+            return single_url  # Already CSV export link
+
+        # GitHub
+        elif "github.com" in netloc:
+            if "/blob/" in single_url:
+                return single_url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/")
+            return single_url  # Already raw URL
+
+        # Direct CSV link
+        else:
+            return single_url
 
     def fetch_csv(single_url):
-        csv_url = convert(single_url)
+        csv_url = convert_url(single_url)
         try:
             return pd.read_csv(csv_url)
         except Exception as e:
@@ -34,15 +47,13 @@ def gsheet_load(url, as_df=False, max_workers=None):
     # Handle single URL vs list
     if isinstance(url, list):
         if as_df:
-            # Parallel download of multiple URLs
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
                 return list(executor.map(fetch_csv, url))
         else:
-            return [convert(u) for u in url]
+            return [convert_url(u) for u in url]
     else:
-        converted = convert(url)
+        converted = convert_url(url)
         return pd.read_csv(converted) if as_df else converted
-
 
 def gsheet_save(data_frames, auto_name=True, name_series="Sheet", save_dir=".", filename=None):
     """
