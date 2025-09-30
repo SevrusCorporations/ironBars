@@ -12,10 +12,17 @@ This utility is perfect for:
 
 ---
 
-# pypi.org
+## Latest Shipment -> [V0.2.2 (Minor Patch) 30-09-2025](https://pypi.org/project/ironBars/0.2.2/)
 <a href="https://pypi.org/project/ironBars/">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/PyPI_logo.svg" width="100" alt="PyPI">
 </a>
+
+**Changes:**
+- Improved URL conversion for Google Sheets and GitHub links.
+- Fixed minor bugs in `gsheet_load` when handling lists of URLs.
+- Enhanced error messages for invalid or inaccessible CSV links.
+- Optimized parallel fetching performance with `max_workers`.
+- Small fixes and code cleanups for better readability and maintainability.
 
 ---
 
