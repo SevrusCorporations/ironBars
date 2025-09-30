@@ -4,6 +4,12 @@
 
 ---
 
+# pypi
+ironBars is now published over [ironBars](https://pypi.org).
+[ironBars](https://pypi.org/project/ironBars/)
+
+---
+
 ## Requirements
 
 - Any operating system with Python installed.
