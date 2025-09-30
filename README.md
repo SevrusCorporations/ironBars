@@ -40,7 +40,7 @@ pip install ironbars
 
 **IronSheets** is a module within Iron Bars that simplifies working with CSV files, especially for loading data directly from Google Sheets or GitHub CSV files. You can fetch single or multiple sheets, load them into pandas DataFrames, and save them with automatic or custom naming—all in a few lines of code.  
 
-For complete usage instructions, visit the [Iron Bars Wiki Documentation](YOUR_WIKI_URL_HERE).
+For complete usage instructions, visit the [Iron Bars Wiki Documentation](https://github.com/SevrusCorporations/ironBars/wiki).
 
 ---
 
@@ -109,7 +109,7 @@ ironSheets.gsheet_save(dfs, auto_name=False, name_series=["First", "Second"])
 - **Flexible Saving:** Auto-name multiple DataFrames or provide custom filenames.  
 - **User-Friendly:** Minimal setup, clean API, and works across platforms.  
 
-For **detailed examples, advanced usage, and troubleshooting**, check out the full documentation on the **[Iron Bars Wiki](YOUR_WIKI_URL_HERE)**.
+For **detailed examples, advanced usage, and troubleshooting**, check out the full documentation on the **[Iron Bars Wiki](https://github.com/SevrusCorporations/ironBars/wiki)**.
 
 ---
 
