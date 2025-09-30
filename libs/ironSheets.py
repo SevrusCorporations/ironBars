@@ -20,12 +20,14 @@ def gsheet_load(url, as_df=False, max_workers=None):
     def convert_url(single_url):
         parsed = urlparse(single_url)
         netloc = parsed.netloc.lower()
+        path = parsed.path.lower()
 
         # Google Sheets
-        if "docs.google.com/spreadsheets" in netloc:
+        if "docs.google.com" in netloc and "/spreadsheets/" in path:
             if "/edit" in single_url:
                 return single_url.split("/edit")[0] + "/gviz/tq?tqx=out:csv"
-            return single_url  # Already CSV export link
+            else:
+                return single_url
 
         # GitHub
         elif "github.com" in netloc:

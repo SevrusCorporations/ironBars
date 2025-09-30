@@ -18,6 +18,7 @@ This utility is perfect for:
 </a>
 
 **Changes:**
+- Fixed issue during converting google sheets link to direct downloadable link.
 - Improved URL conversion for Google Sheets and GitHub links.
 - Fixed minor bugs in `gsheet_load` when handling lists of URLs.
 - Enhanced error messages for invalid or inaccessible CSV links.

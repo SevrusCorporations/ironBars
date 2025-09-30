@@ -27,3 +27,7 @@ dependencies = [
 [project.urls]
 homepage = "https://github.com/sevruscorporations/ironbars"
 repository = "https://github.com/sevruscorporations/ironbars"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*", "test.py"]
