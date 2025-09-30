@@ -4,7 +4,8 @@
 
 ---
 
-# pypi
+# pypi.org
+[![PyPI](https://pypi.org/static/images/logo-small.95de8436.svg)](https://pypi.org/)
 ironBars is now published over [ironBars](https://pypi.org).
 [ironBars](https://pypi.org/project/ironBars/)
 
