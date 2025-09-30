@@ -5,7 +5,9 @@
 ---
 
 # pypi.org
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/64/PyPI_logo.svg" href="https://pypi.org/project/ironBars/">
+<a href="https://pypi.org/project/ironBars/">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/PyPI_logo.svg" width="100" alt="PyPI">
+</a>
 
 ---
 
