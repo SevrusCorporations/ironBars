@@ -1,0 +1,7 @@
+site_name: ironBars Documentation
+site_dir: html_site  # <- must NOT be 'docs'
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
