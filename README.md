@@ -12,19 +12,18 @@ This utility is perfect for:
 
 ---
 
-## Latest Shipment -> [V0.2.4 (Minor Patch) 30-09-2025](https://pypi.org/project/ironBars/0.2.3/)
+## Latest Shipment -> [V0.2.6 (Added Filling gaps in dataset) 01-10-2025](https://pypi.org/project/ironBars/0.2.6/)
 <a href="https://pypi.org/project/ironBars/">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/PyPI_logo.svg" width="100" alt="PyPI">
 </a>
 
 **Changes:**
-- Fixed issue during converting google sheets link to direct downloadable link.
-- Improved URL conversion for Google Sheets and GitHub links.
-- Fixed minor bugs in `gsheet_load` when handling lists of URLs.
-- Enhanced error messages for invalid or inaccessible CSV links.
-- Optimized parallel fetching performance with `max_workers`.
-- Small fixes and code cleanups for better readability and maintainability.
+- Added function: **fill_nans**.
+- <mark>Fixed importing issue.</mark>
 
+**Pending:**
+- Implementing documentation for function: **fill_nans**.
+- Implementing dependency issues on different machines.
 ---
 
 ## Requirements
@@ -40,6 +39,12 @@ You can easily install **Iron Bars** via `pip`:
 
 ```bash
 pip install ironbars
+```
+
+You can easily use **Iron Bars** by using:
+```bash
+import ironBars # for importing whole Module
+import ironBars.ironSheets # for importing ironSheets
 ```
 
 ---

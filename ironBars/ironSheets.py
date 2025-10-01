@@ -1,8 +1,11 @@
 # Author -> Sevrus b25bs1304@iitj.ac.in, GITHUB -> sevruscorporations@gmail.com
 import os
 import pandas as pd
+import numpy as np
 from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urlparse
+from sklearn.linear_model import LinearRegression
+from noise import pnoise1
 
 def gsheet_load(url, as_df=False, max_workers=None):
     """
@@ -106,3 +109,63 @@ def gsheet_save(data_frames, auto_name=True, name_series="Sheet", save_dir=".", 
             fname = f"{name_series[idx]}.csv"
         fpath = os.path.join(save_dir, fname)
         frame.to_csv(fpath, index=False)
+
+
+def fill_nans(df, column_name=None, method="perlin", seed=0, scale_factor=0.1):
+    """
+    Fill NaN values in a DataFrame column or all numeric columns using either 'perlin' or 'linear'.
+
+    Parameters:
+    - df: pandas DataFrame
+    - column_name: column to fill. If None, fills all numeric columns.
+    - method: "perlin" or "linear"
+    - seed: starting index for Perlin noise
+    - scale_factor: step size for Perlin noise
+
+    Returns:
+    - df_copy: DataFrame with NaNs filled
+    """
+    df_copy = df.copy()
+
+    if column_name is not None:
+        if not np.issubdtype(df_copy[column_name].dtype, np.number):
+            raise TypeError(f"Column '{column_name}' must be numeric.")
+        cols_to_fill = [column_name]
+    else:
+        cols_to_fill = df_copy.select_dtypes(include=[np.number]).columns.tolist()
+
+    for col in cols_to_fill:
+        arr = df_copy[col].to_numpy(dtype=float)
+        nan_mask = np.isnan(arr)
+
+        if not nan_mask.any():
+            continue
+
+        if method == "perlin":
+            # Perlin noise filling
+            mean_val = np.nanmean(arr)
+            std_val = np.nanstd(arr)
+            indices = np.arange(len(arr))
+            noise_vals = np.array([pnoise1((i + seed) * scale_factor) for i in indices])
+            noise_scaled = noise_vals * 2 * std_val + mean_val
+            noise_scaled = np.clip(noise_scaled, 0, 100)
+            arr[nan_mask] = noise_scaled[nan_mask]
+
+        elif method == "linear":
+            # Linear regression over index
+            indices_all = np.arange(len(arr)).reshape(-1, 1)
+            X_train = indices_all[~nan_mask]  # use row index as X
+            y_train = arr[~nan_mask]          # existing values as Y
+            X_pred = indices_all[nan_mask]    # index of NaNs
+
+            model = LinearRegression()
+            model.fit(X_train, y_train)
+            arr[nan_mask] = model.predict(X_pred)
+            arr = np.clip(arr, 0, 100)
+
+        else:
+            raise ValueError("Method must be 'perlin' or 'linear'")
+
+        df_copy[col] = arr
+
+    return df_copy
