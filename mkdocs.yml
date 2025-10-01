@@ -1,5 +1,5 @@
 site_name: ironBars Documentation
-site_dir: html_site  # <- must NOT be 'docs'
+site_dir: documentation  # <- must NOT be 'docs'
 
 plugins:
   - search
