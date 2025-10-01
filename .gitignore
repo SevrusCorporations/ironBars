@@ -8,3 +8,4 @@ test*
 .pypirc
 upload*
 testdata/
+ironBars.wiki

@@ -110,20 +110,38 @@ def gsheet_save(data_frames, auto_name=True, name_series="Sheet", save_dir=".", 
         fpath = os.path.join(save_dir, fname)
         frame.to_csv(fpath, index=False)
 
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from noise import pnoise1
 
-def fill_nans(df, column_name=None, method="perlin", seed=0, scale_factor=0.1):
+def fill_nans(df, column_name=None, method="perlin", seed=0, scale_factor=0.1, lim_min=0, lim_max=100):
     """
-    Fill NaN values in a DataFrame column or all numeric columns using either 'perlin' or 'linear'.
-
+    Fill NaN values in a DataFrame column or all numeric columns using either 'perlin' noise or 'linear' regression.
+    
     Parameters:
-    - df: pandas DataFrame
-    - column_name: column to fill. If None, fills all numeric columns.
-    - method: "perlin" or "linear"
-    - seed: starting index for Perlin noise
-    - scale_factor: step size for Perlin noise
-
+    - df : pandas.DataFrame
+        Input DataFrame containing numeric columns.
+    - column_name : str, optional
+        Column to fill. If None, all numeric columns will be filled.
+    - method : str, default "perlin"
+        Filling method: "perlin" for Perlin noise, "linear" for linear regression.
+    - seed : int, default 0
+        Seed or starting index for Perlin noise generation.
+    - scale_factor : float, default 0.1
+        Step size for Perlin noise generation.
+    - lim_min : float, default 0
+        Minimum limit for filled values.
+    - lim_max : float, default 100
+        Maximum limit for filled values.
+        
     Returns:
-    - df_copy: DataFrame with NaNs filled
+    - pandas.DataFrame
+        A copy of the original DataFrame with NaNs filled, respecting user-defined limits.
+    
+    Raises:
+    - TypeError: If the specified column is not numeric.
+    - ValueError: If the method is not "perlin" or "linear".
     """
     df_copy = df.copy()
 
@@ -142,26 +160,24 @@ def fill_nans(df, column_name=None, method="perlin", seed=0, scale_factor=0.1):
             continue
 
         if method == "perlin":
-            # Perlin noise filling
             mean_val = np.nanmean(arr)
             std_val = np.nanstd(arr)
             indices = np.arange(len(arr))
             noise_vals = np.array([pnoise1((i + seed) * scale_factor) for i in indices])
             noise_scaled = noise_vals * 2 * std_val + mean_val
-            noise_scaled = np.clip(noise_scaled, 0, 100)
+            noise_scaled = np.clip(noise_scaled, lim_min, lim_max)
             arr[nan_mask] = noise_scaled[nan_mask]
 
         elif method == "linear":
-            # Linear regression over index
             indices_all = np.arange(len(arr)).reshape(-1, 1)
-            X_train = indices_all[~nan_mask]  # use row index as X
-            y_train = arr[~nan_mask]          # existing values as Y
-            X_pred = indices_all[nan_mask]    # index of NaNs
+            X_train = indices_all[~nan_mask]
+            y_train = arr[~nan_mask]
+            X_pred = indices_all[nan_mask]
 
             model = LinearRegression()
             model.fit(X_train, y_train)
             arr[nan_mask] = model.predict(X_pred)
-            arr = np.clip(arr, 0, 100)
+            arr = np.clip(arr, lim_min, lim_max)
 
         else:
             raise ValueError("Method must be 'perlin' or 'linear'")
