@@ -3,7 +3,7 @@ name: Build, Publish & Deploy Documentation
 on:
   push:
     tags:
-      - 'v*.*.*'  # Trigger only on version tags like v0.3.0
+      - 'v*.*.*'
 
 permissions:
   contents: read
