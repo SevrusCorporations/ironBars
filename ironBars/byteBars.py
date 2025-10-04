@@ -379,3 +379,7 @@ class byteBars:
         total = sum(num for _, _, num in self.index)
         total += len(self.pending_block)
         return total
+
+def prank():
+    """Just a prank LOL"""
+    print("THIS IS A PRANK!, IT WILL BE REMOVED SOON!")
