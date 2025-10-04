@@ -12,17 +12,18 @@ This utility is perfect for:
 
 ---
 
-## Latest Shipment -> [V0.2.6 (Added Filling gaps in dataset) 01-10-2025](https://pypi.org/project/ironBars/0.2.6/)
+## Latest Shipment -> [V0.3.0 (Added byteBars for lazy DataFrame storage) 04-10-2025](https://pypi.org/project/ironBars/0.3.0/)
 <a href="https://pypi.org/project/ironBars/">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/PyPI_logo.svg" width="100" alt="PyPI">
 </a>
 
 **Changes:**
-- Added function: **fill_nans**.
-- <mark>Fixed importing issue.</mark>
+- Added **byteBars**: disk-backed, compressed, lazy-loading DataFrame storage with row-, block-, and column-wise access. **<mark>[v0.3.0]</mark>**
+- Added function: **fill_nans**. **<mark>[v0.2.6]</mark>**
+- Fixed importing issue. **<mark>[v0.2.5]</mark>**
 
 **Pending:**
-- Implementing documentation for function: **fill_nans**.
+- Implementing new feature which is extending a dataset with suitable values. **Extending a small dataset to large** 
 - Implementing dependency issues on different machines.
 ---
 
@@ -53,7 +54,7 @@ import ironBars.ironSheets # for importing ironSheets
 
 **IronSheets** is a module within Iron Bars that simplifies working with CSV files, especially for loading data directly from Google Sheets or GitHub CSV files. You can fetch single or multiple sheets, load them into pandas DataFrames, and save them with automatic or custom naming—all in a few lines of code.  
 
-For complete usage instructions, visit the [Iron Bars Wiki Documentation](https://github.com/SevrusCorporations/ironBars/wiki).
+For complete usage instructions, visit the [Iron Bars Wiki Documentation](https://sevruscorporations.github.io/ironBars/).
 
 ---
 
@@ -122,7 +123,7 @@ ironSheets.gsheet_save(dfs, auto_name=False, name_series=["First", "Second"])
 - **Flexible Saving:** Auto-name multiple DataFrames or provide custom filenames.  
 - **User-Friendly:** Minimal setup, clean API, and works across platforms.  
 
-For **detailed examples, advanced usage, and troubleshooting**, check out the full documentation on the **[Iron Bars Wiki](https://github.com/SevrusCorporations/ironBars/wiki)**.
+For **detailed examples, advanced usage, and troubleshooting**, check out the full documentation on the **[Iron Bars Wiki](https://sevruscorporations.github.io/ironBars/)**.
 
 ---
 

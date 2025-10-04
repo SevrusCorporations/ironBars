@@ -1,13 +1,14 @@
-# IronBars Documentation
+# Documentation
 
-## gsheet_load
+## ironBars
 ::: ironBars.ironSheets.gsheet_load
-- Load data from a Google Sheet into a pandas DataFrame.
-
-## gsheet_save
 ::: ironBars.ironSheets.gsheet_save
-- Save a pandas DataFrame to a Google Sheet.
-
-## fill_nans
 ::: ironBars.ironSheets.fill_nans
-- Fill missing values in a DataFrame using Perlin Noise and Linear Regression.
+
+## byteBars
+::: ironBars.byteBars.byteBars
+- Disk-backed, compressed, lazy-loading DataFrame-like storage.
+- Supports row-wise, block-wise, and column-wise access.
+- Stores Pandas DataFrames, Series, lists, and dictionaries efficiently.
+- Provides SHA-256 integrity verification for data and index files.
+- Full DataFrame-like interface via `.df` with `.iloc`, `.head()`, `.tail()`, and `.to_numpy()`.

@@ -5,3 +5,9 @@ plugins:
   - search
   - mkdocstrings:
       default_handler: python
+      options:
+            show_source: false
+            show_root_toc_entry: false
+            filters:
+              exclude:
+                - "^__.*$"  # hide dunder methods if you want
