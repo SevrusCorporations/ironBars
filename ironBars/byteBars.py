@@ -382,4 +382,4 @@ class byteBars:
 
 def prank():
     """Just a prank LOL"""
-    print("THIS IS A PRANK!, IT WILL BE REMOVED SOON! YEAH")
+    print("THIS IS A PRANK!, IT WILL BE REMOVED SOON! YEAH!")
