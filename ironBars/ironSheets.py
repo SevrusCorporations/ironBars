@@ -110,26 +110,26 @@ def gsheet_save(data_frames, auto_name=True, name_series="Sheet", save_dir=".", 
         fpath = os.path.join(save_dir, fname)
         frame.to_csv(fpath, index=False)
 
+from sklearn.linear_model import LinearRegression
+from opensimplex import OpenSimplex
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LinearRegression
-from noise import pnoise1
 
-def fill_nans(df, column_name=None, method="perlin", seed=0, scale_factor=0.1, lim_min=0, lim_max=100):
+def fill_nans(df, column_name=None, method="opensimplex", seed=0, scale_factor=0.1, lim_min=0, lim_max=100):
     """
-    Fill NaN values in a DataFrame column or all numeric columns using either 'perlin' noise or 'linear' regression.
+    Fill NaN values in a DataFrame column or all numeric columns using either OpenSimplex noise or linear regression.
     
     Parameters:
     - df : pandas.DataFrame
         Input DataFrame containing numeric columns.
     - column_name : str, optional
         Column to fill. If None, all numeric columns will be filled.
-    - method : str, default "perlin"
-        Filling method: "perlin" for Perlin noise, "linear" for linear regression.
+    - method : str, default "opensimplex"
+        Filling method: "opensimplex" for OpenSimplex noise, "linear" for linear regression.
     - seed : int, default 0
-        Seed or starting index for Perlin noise generation.
+        Seed for OpenSimplex noise generation.
     - scale_factor : float, default 0.1
-        Step size for Perlin noise generation.
+        Step size for noise generation.
     - lim_min : float, default 0
         Minimum limit for filled values.
     - lim_max : float, default 100
@@ -138,13 +138,8 @@ def fill_nans(df, column_name=None, method="perlin", seed=0, scale_factor=0.1, l
     Returns:
     - pandas.DataFrame
         A copy of the original DataFrame with NaNs filled, respecting user-defined limits.
-    
-    Raises:
-    - TypeError: If the specified column is not numeric.
-    - ValueError: If the method is not "perlin" or "linear".
     """
     df_copy = df.copy()
-
     if column_name is not None:
         if not np.issubdtype(df_copy[column_name].dtype, np.number):
             raise TypeError(f"Column '{column_name}' must be numeric.")
@@ -159,11 +154,12 @@ def fill_nans(df, column_name=None, method="perlin", seed=0, scale_factor=0.1, l
         if not nan_mask.any():
             continue
 
-        if method == "perlin":
+        if method == "opensimplex":
             mean_val = np.nanmean(arr)
             std_val = np.nanstd(arr)
+            tmp = OpenSimplex(seed=seed)
             indices = np.arange(len(arr))
-            noise_vals = np.array([pnoise1((i + seed) * scale_factor) for i in indices])
+            noise_vals = np.array([tmp.noise2d(x=i*scale_factor, y=0) for i in indices])
             noise_scaled = noise_vals * 2 * std_val + mean_val
             noise_scaled = np.clip(noise_scaled, lim_min, lim_max)
             arr[nan_mask] = noise_scaled[nan_mask]
@@ -180,7 +176,7 @@ def fill_nans(df, column_name=None, method="perlin", seed=0, scale_factor=0.1, l
             arr = np.clip(arr, lim_min, lim_max)
 
         else:
-            raise ValueError("Method must be 'perlin' or 'linear'")
+            raise ValueError("Method must be 'opensimplex' or 'linear'")
 
         df_copy[col] = arr
 
